@@ -1,0 +1,125 @@
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3') center/cover;">
+    <div class="container">
+        <div class="row align-items-center min-vh-50">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Chào mừng đến với Restaurantly</h1>
+                <p class="lead mb-4">Trải nghiệm hương vị truyền thống Việt Nam với không gian ấm cúng và dịch vụ tận tâm</p>
+                <div class="d-flex gap-3">
+                    <a href="@Url.Action("Index", "Menu")" class="btn btn-warning btn-lg">
+                        <i class="fas fa-utensils me-2"></i>Xem thực đơn
+                    </a>
+                    <a href="@Url.Action("Index", "Booking")" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-calendar-alt me-2"></i>Đặt bàn ngay
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-primary mb-3">
+                            <i class="fas fa-utensils fa-3x"></i>
+                        </div>
+                        <h5 class="card-title">Món ăn ngon</h5>
+                        <p class="card-text">Các món ăn truyền thống được chế biến từ nguyên liệu tươi ngon nhất</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-primary mb-3">
+                            <i class="fas fa-clock fa-3x"></i>
+                        </div>
+                        <h5 class="card-title">Phục vụ nhanh</h5>
+                        <p class="card-text">Đội ngũ nhân viên chuyên nghiệp, phục vụ nhanh chóng và chu đáo</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-primary mb-3">
+                            <i class="fas fa-heart fa-3x"></i>
+                        </div>
+                        <h5 class="card-title">Không gian ấm cúng</h5>
+                        <p class="card-text">Không gian nhà hàng được thiết kế ấm cúng, phù hợp cho mọi dịp</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Menu Section -->
+@if (ViewBag.FeaturedItems != null && ((List<RestaurantMVC.Models.MenuItem>)ViewBag.FeaturedItems).Any())
+{
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Món ăn nổi bật</h2>
+                <p class="lead">Những món ăn được yêu thích nhất tại nhà hàng</p>
+            </div>
+            <div class="row">
+                @foreach (var item in (List<RestaurantMVC.Models.MenuItem>)ViewBag.FeaturedItems)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/300x200?text=" + Uri.EscapeDataString(item.Name) : item.ImageUrl)" 
+                                 class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text flex-grow-1">@item.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="h5 text-primary mb-0">@item.Price.ToString("N0") VNĐ</span>
+                                    <span class="badge bg-secondary">@item.Category</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Index", "Menu")" class="btn btn-primary btn-lg">
+                    <i class="fas fa-eye me-2"></i>Xem tất cả món ăn
+                </a>
+            </div>
+        </div>
+    </section>
+}
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="display-5 fw-bold mb-4">Sẵn sàng thưởng thức?</h2>
+                <p class="lead mb-4">Đặt bàn ngay hôm nay để trải nghiệm những món ăn tuyệt vời tại Restaurantly</p>
+                <a href="@Url.Action("Index", "Booking")" class="btn btn-warning btn-lg">
+                    <i class="fas fa-calendar-alt me-2"></i>Đặt bàn ngay
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.min-vh-50 {
+    min-height: 50vh;
+}
+.hero-section {
+    position: relative;
+}
+</style>

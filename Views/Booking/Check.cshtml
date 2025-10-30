@@ -1,0 +1,238 @@
+@{
+    ViewData["Title"] = "Kiểm tra đặt bàn";
+}
+
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold mb-4">Kiểm tra đặt bàn</h1>
+            <p class="lead">Nhập thông tin để kiểm tra trạng thái đặt bàn của bạn</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Search Form -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-search me-2"></i>Tìm kiếm đặt bàn</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" asp-action="Check">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Chọn cách tìm kiếm:</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchType" id="searchByEmail" value="email" checked>
+                                        <label class="form-check-label" for="searchByEmail">
+                                            <i class="fas fa-envelope me-2"></i>Tìm theo Email
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchType" id="searchById" value="id">
+                                        <label class="form-check-label" for="searchById">
+                                            <i class="fas fa-hashtag me-2"></i>Tìm theo mã đặt bàn
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="emailSearch" class="search-section">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email đặt bàn <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       placeholder="Nhập email bạn đã sử dụng khi đặt bàn">
+                            </div>
+                        </div>
+
+                        <div id="idSearch" class="search-section" style="display: none;">
+                            <div class="mb-3">
+                                <label for="bookingId" class="form-label">Mã đặt bàn <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="bookingId" name="bookingId" 
+                                       placeholder="Nhập mã đặt bàn (ví dụ: 123456)">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-search me-2"></i>Tìm kiếm
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            @if (ViewBag.Bookings != null)
+            {
+                var bookings = (List<RestaurantMVC.Models.Booking>)ViewBag.Bookings;
+                
+                if (bookings.Any())
+                {
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0"><i class="fas fa-list me-2"></i>Kết quả tìm kiếm (@bookings.Count đặt bàn)</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            @foreach (var booking in bookings)
+                            {
+                                <div class="border-bottom p-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <h5 class="mb-0 me-3">Mã: #@booking.Id.ToString().PadLeft(6, '0')</h5>
+                                                <span class="badge @(booking.Status == RestaurantMVC.Models.BookingStatus.Confirmed ? "bg-success" : booking.Status == RestaurantMVC.Models.BookingStatus.Pending ? "bg-warning" : "bg-danger") fs-6">
+                                                    @booking.Status
+                                                </span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <small class="text-muted">Tên khách hàng:</small>
+                                                    <div class="fw-bold">@booking.CustomerName</div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <small class="text-muted">Số điện thoại:</small>
+                                                    <div class="fw-bold">@booking.Phone</div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <small class="text-muted">Ngày đặt:</small>
+                                                    <div class="fw-bold">@booking.BookingDate.ToString("dd/MM/yyyy")</div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <small class="text-muted">Giờ đặt:</small>
+                                                    <div class="fw-bold">@booking.BookingTime.ToString(@"hh\:mm")</div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <small class="text-muted">Số người:</small>
+                                                    <div class="fw-bold">@booking.PartySize người</div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <small class="text-muted">Ngày tạo:</small>
+                                                    <div class="fw-bold">@booking.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                                                </div>
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(booking.SpecialRequests))
+                                            {
+                                                <div class="mt-2">
+                                                    <small class="text-muted">Yêu cầu đặc biệt:</small>
+                                                    <div class="bg-light p-2 rounded mt-1">@booking.SpecialRequests</div>
+                                                </div>
+                                            }
+                                            @if (!string.IsNullOrEmpty(booking.AdminNotes))
+                                            {
+                                                <div class="mt-2">
+                                                    <small class="text-muted">Ghi chú từ nhà hàng:</small>
+                                                    <div class="bg-info bg-opacity-10 p-2 rounded mt-1">@booking.AdminNotes</div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="col-md-4 text-md-end">
+                                            <div class="d-flex flex-column gap-2">
+                                                @if (booking.Status == RestaurantMVC.Models.BookingStatus.Pending)
+                                                {
+                                                    <span class="badge bg-warning p-2">
+                                                        <i class="fas fa-clock me-1"></i>Chờ xác nhận
+                                                    </span>
+                                                }
+                                                else if (booking.Status == RestaurantMVC.Models.BookingStatus.Confirmed)
+                                                {
+                                                    <span class="badge bg-success p-2">
+                                                        <i class="fas fa-check me-1"></i>Đã xác nhận
+                                                    </span>
+                                                }
+                                                else if (booking.Status == RestaurantMVC.Models.BookingStatus.Cancelled)
+                                                {
+                                                    <span class="badge bg-danger p-2">
+                                                        <i class="fas fa-times me-1"></i>Đã hủy
+                                                    </span>
+                                                }
+                                                else if (booking.Status == RestaurantMVC.Models.BookingStatus.Completed)
+                                                {
+                                                    <span class="badge bg-info p-2">
+                                                        <i class="fas fa-check-double me-1"></i>Hoàn thành
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center py-5">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <h4 class="text-muted">Không tìm thấy đặt bàn</h4>
+                            <p class="text-muted">Không tìm thấy đặt bàn nào với thông tin bạn đã nhập. Vui lòng kiểm tra lại thông tin.</p>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Help Section -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>Cần hỗ trợ?</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Không tìm thấy đặt bàn?</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Kiểm tra lại email đã nhập</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Kiểm tra mã đặt bàn trong email xác nhận</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Liên hệ với chúng tôi để được hỗ trợ</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Liên hệ hỗ trợ:</h6>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-phone text-primary me-2"></i>
+                                <a href="tel:+84123456789" class="text-decoration-none">+84 123 456 789</a>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-envelope text-primary me-2"></i>
+                                <a href="mailto:booking@restaurantly.com" class="text-decoration-none">booking@restaurantly.com</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="@Url.Action("Index")" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Đặt bàn mới
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchTypeRadios = document.querySelectorAll('input[name="searchType"]');
+    const emailSearch = document.getElementById('emailSearch');
+    const idSearch = document.getElementById('idSearch');
+    
+    searchTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'email') {
+                emailSearch.style.display = 'block';
+                idSearch.style.display = 'none';
+                document.getElementById('email').required = true;
+                document.getElementById('bookingId').required = false;
+            } else {
+                emailSearch.style.display = 'none';
+                idSearch.style.display = 'block';
+                document.getElementById('email').required = false;
+                document.getElementById('bookingId').required = true;
+            }
+        });
+    });
+});
+</script>

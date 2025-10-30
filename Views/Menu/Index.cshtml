@@ -1,0 +1,120 @@
+@model IEnumerable<RestaurantMVC.Models.MenuItem>
+@{
+    ViewData["Title"] = "Thực đơn";
+}
+
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold mb-4">Thực đơn</h1>
+            <p class="lead">Khám phá những món ăn đặc sắc của chúng tôi</p>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a href="@Url.Action("Index")" class="btn @(string.IsNullOrEmpty(ViewBag.SelectedCategory) ? "btn-primary" : "btn-outline-primary")">
+                            <i class="fas fa-th-large me-2"></i>Tất cả
+                        </a>
+                        <a href="@Url.Action("Index", new { category = "Khai vị" })" 
+                           class="btn @(ViewBag.SelectedCategory == "Khai vị" ? "btn-primary" : "btn-outline-primary")">
+                            <i class="fas fa-leaf me-2"></i>Khai vị
+                        </a>
+                        <a href="@Url.Action("Index", new { category = "Món chính" })" 
+                           class="btn @(ViewBag.SelectedCategory == "Món chính" ? "btn-primary" : "btn-outline-primary")">
+                            <i class="fas fa-drumstick-bite me-2"></i>Món chính
+                        </a>
+                        <a href="@Url.Action("Index", new { category = "Tráng miệng" })" 
+                           class="btn @(ViewBag.SelectedCategory == "Tráng miệng" ? "btn-primary" : "btn-outline-primary")">
+                            <i class="fas fa-ice-cream me-2"></i>Tráng miệng
+                        </a>
+                        <a href="@Url.Action("Index", new { category = "Đồ uống" })" 
+                           class="btn @(ViewBag.SelectedCategory == "Đồ uống" ? "btn-primary" : "btn-outline-primary")">
+                            <i class="fas fa-coffee me-2"></i>Đồ uống
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Items -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm @(item.IsAvailable ? "" : "opacity-75")">
+                        <div class="position-relative">
+                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/300x200?text=" + Uri.EscapeDataString(item.Name) : item.ImageUrl)" 
+                                 class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                            @if (!item.IsAvailable)
+                            {
+                                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+                                     style="background: rgba(0,0,0,0.7);">
+                                    <span class="badge bg-danger fs-6">Hết món</span>
+                                </div>
+                            }
+                            <div class="position-absolute top-0 end-0 m-2">
+                                <span class="badge bg-primary">@item.Category</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text flex-grow-1">@item.Description</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="h5 text-primary mb-0">@item.Price.ToString("N0") VNĐ</span>
+                                <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-eye me-1"></i>Chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">Không có món ăn nào</h4>
+                    <p class="text-muted">
+                        @if (!string.IsNullOrEmpty(ViewBag.SelectedCategory))
+                        {
+                            <span>Không tìm thấy món ăn trong danh mục "@ViewBag.SelectedCategory"</span>
+                        }
+                        else
+                        {
+                            <span>Hiện tại chưa có món ăn nào trong thực đơn</span>
+                        }
+                    </p>
+                    <a href="@Url.Action("Index")" class="btn btn-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Xem tất cả món ăn
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- CTA Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="bg-primary text-white p-4 rounded text-center">
+                <h4 class="mb-3">Sẵn sàng đặt bàn?</h4>
+                <p class="mb-3">Hãy đặt bàn ngay để thưởng thức những món ăn tuyệt vời này!</p>
+                <a href="@Url.Action("Index", "Booking")" class="btn btn-warning btn-lg">
+                    <i class="fas fa-calendar-alt me-2"></i>Đặt bàn ngay
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

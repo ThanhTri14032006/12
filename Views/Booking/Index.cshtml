@@ -1,0 +1,215 @@
+@{
+    ViewData["Title"] = "Đặt bàn";
+}
+
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold mb-4">Đặt bàn</h1>
+            <p class="lead">Đặt bàn trước để đảm bảo có chỗ ngồi tốt nhất cho bạn</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Booking Form -->
+        <div class="col-lg-8 mb-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Thông tin đặt bàn</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" asp-action="Create" id="bookingForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="customerName" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="customerName" name="customerName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="customerPhone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="customerPhone" name="customerPhone" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="customerEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="customerEmail" name="customerEmail" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="bookingDate" class="form-label">Ngày đặt bàn <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="bookingDate" name="bookingDate" 
+                                       min="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="bookingTime" class="form-label">Giờ đặt bàn <span class="text-danger">*</span></label>
+                                <select class="form-select" id="bookingTime" name="bookingTime" required>
+                                    <option value="">Chọn giờ</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="10:30">10:30</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="11:30">11:30</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="12:30">12:30</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="13:30">13:30</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="17:30">17:30</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="18:30">18:30</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="19:30">19:30</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="20:30">20:30</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="21:30">21:30</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="partySize" class="form-label">Số người <span class="text-danger">*</span></label>
+                            <select class="form-select" id="partySize" name="partySize" required>
+                                <option value="">Chọn số người</option>
+                                @for (int i = 1; i <= 20; i++)
+                                {
+                                    <option value="@i">@i người</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="specialRequests" class="form-label">Yêu cầu đặc biệt</label>
+                            <textarea class="form-control" id="specialRequests" name="specialRequests" rows="3" 
+                                      placeholder="Ví dụ: Bàn gần cửa sổ, sinh nhật, kỷ niệm..."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    Tôi đồng ý với <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">điều khoản và điều kiện</a> <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-check me-2"></i>Xác nhận đặt bàn
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Sidebar -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Thông tin quan trọng</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Giờ mở cửa:</h6>
+                        <p class="mb-1">Thứ 2 - Thứ 6: 10:00 - 22:00</p>
+                        <p class="mb-0">Thứ 7 - Chủ nhật: 09:00 - 23:00</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Chính sách đặt bàn:</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="fas fa-check text-success me-2"></i>Đặt bàn trước tối thiểu 2 giờ</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Giữ bàn trong 15 phút</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Miễn phí hủy trước 1 giờ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-phone me-2"></i>Liên hệ</h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Điện thoại:</strong> <a href="tel:+84123456789">+84 123 456 789</a></p>
+                    <p class="mb-2"><strong>Email:</strong> <a href="mailto:booking@restaurantly.com">booking@restaurantly.com</a></p>
+                    <p class="mb-0"><strong>Địa chỉ:</strong> 123 Đường ABC, Quận 1, TP.HCM</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-search me-2"></i>Kiểm tra đặt bàn</h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Đã đặt bàn rồi? Kiểm tra thông tin đặt bàn của bạn</p>
+                    <a href="@Url.Action("Check")" class="btn btn-info w-100">
+                        <i class="fas fa-search me-2"></i>Kiểm tra đặt bàn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Điều khoản và điều kiện</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. Chính sách đặt bàn</h6>
+                <ul>
+                    <li>Khách hàng cần đặt bàn trước tối thiểu 2 giờ</li>
+                    <li>Nhà hàng sẽ giữ bàn trong 15 phút kể từ giờ đặt</li>
+                    <li>Sau 15 phút, bàn có thể được chuyển cho khách khác</li>
+                </ul>
+                
+                <h6>2. Chính sách hủy bàn</h6>
+                <ul>
+                    <li>Miễn phí hủy bàn trước 1 giờ so với giờ đặt</li>
+                    <li>Hủy bàn trong vòng 1 giờ có thể bị tính phí</li>
+                </ul>
+                
+                <h6>3. Quy định khác</h6>
+                <ul>
+                    <li>Nhà hàng có quyền từ chối phục vụ trong một số trường hợp đặc biệt</li>
+                    <li>Khách hàng vui lòng tuân thủ quy định về trang phục</li>
+                    <li>Không hút thuốc trong khu vực nhà hàng</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('bookingDate').setAttribute('min', today);
+    
+    // Form validation
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        const date = document.getElementById('bookingDate').value;
+        const time = document.getElementById('bookingTime').value;
+        
+        if (date && time) {
+            const bookingDateTime = new Date(date + 'T' + time);
+            const now = new Date();
+            const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+            
+            if (bookingDateTime < twoHoursFromNow) {
+                e.preventDefault();
+                alert('Vui lòng đặt bàn trước tối thiểu 2 giờ!');
+                return false;
+            }
+        }
+    });
+});
+</script>

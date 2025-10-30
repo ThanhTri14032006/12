@@ -1,0 +1,97 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = RestaurantMVC
+build_property.RootNamespace = RestaurantMVC
+build_property.ProjectDir = /Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/thanhtri/Downloads/Restaurantly/RestaurantMVC
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9BY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Admin/Bookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQm9va2luZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Admin/Menu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Booking/Check.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9DaGVjay5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Booking/Confirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9Db25maXJtYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Booking/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Home/About.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BYm91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Home/Contact.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Db250YWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Menu/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVudS9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Menu/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVudS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-wbt0fyanep
