@@ -57,10 +57,15 @@ namespace RestaurantMVC.Controllers
                 bookings = bookings.Where(b => b.BookingDate.Date == date.Value.Date);
             }
             
+            // Get bookings and sort in memory to avoid SQLite TimeSpan ORDER BY issue
             var result = await bookings
                 .OrderByDescending(b => b.BookingDate)
-                .ThenByDescending(b => b.BookingTime)
                 .ToListAsync();
+            
+            // Sort by BookingTime in memory (now using DateTime.TimeOfDay)
+            result = result.OrderByDescending(b => b.BookingDate)
+                          .ThenByDescending(b => b.BookingTime.TimeOfDay)
+                          .ToList();
             
             ViewBag.SelectedStatus = status;
             ViewBag.SelectedDate = date;

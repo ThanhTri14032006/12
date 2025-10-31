@@ -49,5 +49,34 @@ namespace RestaurantMVC.Controllers
             
             return View(menuItem);
         }
+
+        // AJAX Search endpoint for real-time search functionality
+        [HttpGet]
+        public async Task<IActionResult> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+            {
+                return Json(new List<object>());
+            }
+
+            var searchResults = await _context.MenuItems
+                .Where(m => m.IsAvailable && 
+                           (m.Name.Contains(query) || 
+                            m.Description.Contains(query) || 
+                            m.Category.Contains(query)))
+                .OrderBy(m => m.Name)
+                .Take(10)
+                .Select(m => new
+                {
+                    id = m.Id,
+                    name = m.Name,
+                    price = m.Price,
+                    category = m.Category,
+                    imageUrl = m.ImageUrl
+                })
+                .ToListAsync();
+
+            return Json(searchResults);
+        }
     }
 }

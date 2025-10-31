@@ -12,6 +12,15 @@ namespace RestaurantMVC.Models
         public DbSet<MenuItem> MenuItems { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(warnings =>
+                warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,13 +60,55 @@ namespace RestaurantMVC.Models
                 entity.HasIndex(e => e.Email).IsUnique();
             });
             
-            // Seed data
+            // Configure Review
+            modelBuilder.Entity<Review>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.CustomerName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.Comment).HasMaxLength(1000);
+                entity.HasOne(e => e.MenuItem)
+                      .WithMany()
+                      .HasForeignKey(e => e.MenuItemId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+            
+            // Configure Order
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.CustomerName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Phone).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.DeliveryAddress).HasMaxLength(500);
+                entity.Property(e => e.TotalAmount).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.Notes).HasMaxLength(500);
+            });
+            
+            // Configure OrderItem
+            modelBuilder.Entity<OrderItem>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.TotalPrice).HasColumnType("decimal(10,2)");
+                
+                entity.HasOne(e => e.Order)
+                      .WithMany(o => o.OrderItems)
+                      .HasForeignKey(e => e.OrderId)
+                      .OnDelete(DeleteBehavior.Cascade);
+                      
+                entity.HasOne(e => e.MenuItem)
+                      .WithMany()
+                      .HasForeignKey(e => e.MenuItemId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+            
             SeedData(modelBuilder);
         }
         
         private void SeedData(ModelBuilder modelBuilder)
         {
-            // Seed Users
+            // Seed Users with static DateTime
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -68,10 +119,10 @@ namespace RestaurantMVC.Models
                     FullName = "Administrator",
                     Role = UserRole.Admin,
                     IsActive = true,
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.SpecifyKind(new DateTime(2024, 1, 1), DateTimeKind.Utc)
                 }
             );
-            
+
             // Seed Menu Items
             modelBuilder.Entity<MenuItem>().HasData(
                 new MenuItem { Id = 1, Name = "Phở Bò", Description = "Phở bò truyền thống với nước dùng đậm đà", Price = 65000, Category = "Món chính", ImageUrl = "/images/pho-bo.jpg", IsAvailable = true },

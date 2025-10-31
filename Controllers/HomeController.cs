@@ -21,6 +21,7 @@ namespace RestaurantMVC.Controllers
             // Get featured menu items for homepage
             var featuredItems = await _context.MenuItems
                 .Where(m => m.IsAvailable)
+                .OrderBy(m => m.Id)
                 .Take(6)
                 .ToListAsync();
             

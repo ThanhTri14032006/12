@@ -6,115 +6,495 @@
 <div class="container py-5">
     <!-- Header Section -->
     <div class="row mb-5">
-        <div class="col-lg-8 mx-auto text-center">
-            <h1 class="display-4 fw-bold mb-4">Thực đơn</h1>
+        <div class="col-lg-8 mx-auto text-center fade-in">
+            <h1 class="display-4 fw-bold mb-4 text-primary-custom">Thực đơn</h1>
             <p class="lead">Khám phá những món ăn đặc sắc của chúng tôi</p>
+            
+            <!-- Search and Sort Section -->
+            <div class="row g-3 mt-4">
+                <div class="col-md-8">
+                    <div class="position-relative">
+                        <input type="text" id="menuSearch" class="form-control form-control-lg shadow-custom" 
+                               placeholder="Tìm kiếm món ăn..." autocomplete="off">
+                        <i class="fas fa-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select id="sortSelect" class="form-select form-select-lg shadow-custom">
+                        <option value="name">Sắp xếp theo tên</option>
+                        <option value="price-asc">Giá: Thấp đến cao</option>
+                        <option value="price-desc">Giá: Cao đến thấp</option>
+                        <option value="category">Theo danh mục</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Filter Section -->
     <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm">
+        <div class="col-12 fade-in">
+            <div class="card shadow-lg-custom border-0">
                 <div class="card-body">
-                    <div class="d-flex flex-wrap justify-content-center gap-2">
-                        <a href="@Url.Action("Index")" class="btn @(string.IsNullOrEmpty(ViewBag.SelectedCategory) ? "btn-primary" : "btn-outline-primary")">
-                            <i class="fas fa-th-large me-2"></i>Tất cả
-                        </a>
-                        <a href="@Url.Action("Index", new { category = "Khai vị" })" 
-                           class="btn @(ViewBag.SelectedCategory == "Khai vị" ? "btn-primary" : "btn-outline-primary")">
-                            <i class="fas fa-leaf me-2"></i>Khai vị
-                        </a>
-                        <a href="@Url.Action("Index", new { category = "Món chính" })" 
-                           class="btn @(ViewBag.SelectedCategory == "Món chính" ? "btn-primary" : "btn-outline-primary")">
-                            <i class="fas fa-drumstick-bite me-2"></i>Món chính
-                        </a>
-                        <a href="@Url.Action("Index", new { category = "Tráng miệng" })" 
-                           class="btn @(ViewBag.SelectedCategory == "Tráng miệng" ? "btn-primary" : "btn-outline-primary")">
-                            <i class="fas fa-ice-cream me-2"></i>Tráng miệng
-                        </a>
-                        <a href="@Url.Action("Index", new { category = "Đồ uống" })" 
-                           class="btn @(ViewBag.SelectedCategory == "Đồ uống" ? "btn-primary" : "btn-outline-primary")">
-                            <i class="fas fa-coffee me-2"></i>Đồ uống
-                        </a>
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="d-flex flex-wrap justify-content-center justify-md-start gap-2">
+                                <button class="btn btn-primary filter-btn active" data-category="all">
+                                    <i class="fas fa-th-large me-2"></i>Tất cả
+                                </button>
+                                <button class="btn btn-outline-primary filter-btn" data-category="Khai vị">
+                                    <i class="fas fa-leaf me-2"></i>Khai vị
+                                </button>
+                                <button class="btn btn-outline-primary filter-btn" data-category="Món chính">
+                                    <i class="fas fa-drumstick-bite me-2"></i>Món chính
+                                </button>
+                                <button class="btn btn-outline-primary filter-btn" data-category="Tráng miệng">
+                                    <i class="fas fa-ice-cream me-2"></i>Tráng miệng
+                                </button>
+                                <button class="btn btn-outline-primary filter-btn" data-category="Đồ uống">
+                                    <i class="fas fa-coffee me-2"></i>Đồ uống
+                                </button>
+                                <button class="btn btn-outline-primary filter-btn" data-category="Món chay">
+                                    <i class="fas fa-seedling me-2"></i>Món chay
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="d-flex justify-content-end align-items-center gap-3">
+                                <span class="text-muted">Hiển thị:</span>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-outline-secondary view-toggle active" data-view="grid">
+                                        <i class="fas fa-th"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary view-toggle" data-view="list">
+                                        <i class="fas fa-list"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Menu Items -->
-    @if (Model != null && Model.Any())
-    {
-        <div class="row">
+    <!-- Menu Items Grid -->
+    <div class="row" id="menuContainer">
+        @if (Model != null && Model.Any())
+        {
             @foreach (var item in Model)
             {
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm @(item.IsAvailable ? "" : "opacity-75")">
-                        <div class="position-relative">
-                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/300x200?text=" + Uri.EscapeDataString(item.Name) : item.ImageUrl)" 
-                                 class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
-                            @if (!item.IsAvailable)
+                <div class="col-lg-4 col-md-6 mb-4 menu-item fade-in" data-category="@item.Category" data-name="@item.Name.ToLower()" data-price="@item.Price">
+                    <div class="card h-100 shadow-custom border-0 menu-card">
+                        <div class="position-relative overflow-hidden">
+                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/400x250/d4a574/ffffff?text=" + Uri.EscapeDataString(item.Name) : item.ImageUrl)" 
+                                 class="card-img-top img-hover" alt="@item.Name" style="height: 250px; object-fit: cover;">
+                            <div class="position-absolute top-0 end-0 m-3">
+                                <span class="badge bg-primary-custom text-white px-3 py-2 rounded-pill">@item.Category</span>
+                            </div>
+                            @if (item.Price < 50000)
                             {
-                                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
-                                     style="background: rgba(0,0,0,0.7);">
-                                    <span class="badge bg-danger fs-6">Hết món</span>
+                                <div class="position-absolute top-0 start-0 m-3">
+                                    <span class="badge bg-success text-white px-3 py-2 rounded-pill">
+                                        <i class="fas fa-tag me-1"></i>Giá tốt
+                                    </span>
                                 </div>
                             }
-                            <div class="position-absolute top-0 end-0 m-2">
-                                <span class="badge bg-primary">@item.Category</span>
-                            </div>
                         </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text flex-grow-1">@item.Description</p>
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="h5 text-primary mb-0">@item.Price.ToString("N0") VNĐ</span>
-                                <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-eye me-1"></i>Chi tiết
-                                </a>
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title fw-bold mb-3">@item.Name</h5>
+                            <p class="card-text text-muted flex-grow-1 mb-3">@item.Description</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="price-section">
+                                    <span class="h4 text-primary-custom fw-bold mb-0">@item.Price.ToString("N0") VNĐ</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary btn-sm add-to-cart" data-id="@item.Id" data-name="@item.Name" data-price="@item.Price">
+                                        <i class="fas fa-cart-plus me-1"></i>Thêm
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             }
-        </div>
-    }
-    else
-    {
-        <div class="row">
-            <div class="col-12">
-                <div class="text-center py-5">
-                    <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
-                    <h4 class="text-muted">Không có món ăn nào</h4>
-                    <p class="text-muted">
-                        @if (!string.IsNullOrEmpty(ViewBag.SelectedCategory))
-                        {
-                            <span>Không tìm thấy món ăn trong danh mục "@ViewBag.SelectedCategory"</span>
-                        }
-                        else
-                        {
-                            <span>Hiện tại chưa có món ăn nào trong thực đơn</span>
-                        }
-                    </p>
-                    <a href="@Url.Action("Index")" class="btn btn-primary">
-                        <i class="fas fa-arrow-left me-2"></i>Xem tất cả món ăn
-                    </a>
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <div class="card shadow-custom border-0">
+                    <div class="card-body py-5">
+                        <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Chưa có món ăn nào</h4>
+                        <p class="text-muted">Thực đơn đang được cập nhật. Vui lòng quay lại sau!</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 
-    <!-- CTA Section -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="bg-primary text-white p-4 rounded text-center">
-                <h4 class="mb-3">Sẵn sàng đặt bàn?</h4>
-                <p class="mb-3">Hãy đặt bàn ngay để thưởng thức những món ăn tuyệt vời này!</p>
-                <a href="@Url.Action("Index", "Booking")" class="btn btn-warning btn-lg">
-                    <i class="fas fa-calendar-alt me-2"></i>Đặt bàn ngay
-                </a>
+    <!-- No Results Message -->
+    <div class="row d-none" id="noResults">
+        <div class="col-12 text-center py-5">
+            <div class="card shadow-custom border-0">
+                <div class="card-body py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">Không tìm thấy món ăn</h4>
+                    <p class="text-muted">Thử tìm kiếm với từ khóa khác hoặc chọn danh mục khác</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Cart Summary (Fixed Position) -->
+<div class="cart-summary position-fixed bottom-0 end-0 m-4 d-none" id="cartSummary">
+    <div class="card shadow-lg-custom border-0">
+        <div class="card-body p-3">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <small class="text-muted">Giỏ hàng</small>
+                    <div class="fw-bold">
+                        <span id="cartCount">0</span> món - <span id="cartTotal">0</span> VNĐ
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="viewCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Menu specific styles */
+.menu-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.menu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+}
+
+.filter-btn {
+    transition: all 0.3s ease;
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+}
+
+.filter-btn:not(.active):hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.view-toggle {
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.view-toggle.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.price-section {
+    position: relative;
+}
+
+.add-to-cart {
+    transition: all 0.3s ease;
+}
+
+.add-to-cart:hover {
+    transform: scale(1.05);
+}
+
+.cart-summary {
+    z-index: 1050;
+    animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* List view styles */
+.list-view .menu-item {
+    margin-bottom: 1rem;
+}
+
+.list-view .menu-card {
+    flex-direction: row;
+}
+
+.list-view .card-img-top {
+    width: 200px;
+    height: 150px;
+    flex-shrink: 0;
+}
+
+.list-view .card-body {
+    flex: 1;
+}
+
+/* Search highlight */
+.highlight {
+    background-color: yellow;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Loading animation */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .menu-card:hover {
+        transform: none;
+    }
+    
+    .cart-summary {
+        left: 1rem;
+        right: 1rem;
+        margin: 1rem;
+    }
+    
+    .filter-btn {
+        font-size: 0.875rem;
+        padding: 0.375rem 0.75rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const menuItems = document.querySelectorAll('.menu-item');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('menuSearch');
+    const sortSelect = document.getElementById('sortSelect');
+    const viewToggles = document.querySelectorAll('.view-toggle');
+    const menuContainer = document.getElementById('menuContainer');
+    const noResults = document.getElementById('noResults');
+    const cartSummary = document.getElementById('cartSummary');
+    
+    let cart = JSON.parse(localStorage.getItem('restaurantCart')) || [];
+    let currentView = 'grid';
+    
+    // Initialize
+    updateCartDisplay();
+    animateOnScroll();
+    
+    // Filter functionality
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const category = this.getAttribute('data-category');
+            filterItems(category);
+        });
+    });
+    
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        searchItems(searchTerm);
+    });
+    
+    // Sort functionality
+    sortSelect.addEventListener('change', function() {
+        sortItems(this.value);
+    });
+    
+    // View toggle
+    viewToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            viewToggles.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            currentView = this.getAttribute('data-view');
+            toggleView(currentView);
+        });
+    });
+    
+    // Add to cart functionality
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-name');
+            const price = parseFloat(this.getAttribute('data-price'));
+            
+            addToCart({ id, name, price });
+            
+            // Visual feedback
+            this.innerHTML = '<i class="fas fa-check me-1"></i>Đã thêm';
+            this.classList.add('btn-success');
+            this.classList.remove('btn-primary');
+            
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-cart-plus me-1"></i>Thêm';
+                this.classList.remove('btn-success');
+                this.classList.add('btn-primary');
+            }, 1500);
+        });
+    });
+    
+    function filterItems(category) {
+        let visibleCount = 0;
+        
+        menuItems.forEach(item => {
+            const itemCategory = item.getAttribute('data-category');
+            
+            if (category === 'all' || itemCategory === category) {
+                item.style.display = 'block';
+                item.classList.add('fade-in');
+                visibleCount++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        toggleNoResults(visibleCount === 0);
+    }
+    
+    function searchItems(searchTerm) {
+        let visibleCount = 0;
+        
+        menuItems.forEach(item => {
+            const itemName = item.getAttribute('data-name');
+            const nameElement = item.querySelector('.card-title');
+            
+            // Remove previous highlights
+            nameElement.innerHTML = nameElement.textContent;
+            
+            if (itemName.includes(searchTerm) || searchTerm === '') {
+                item.style.display = 'block';
+                visibleCount++;
+                
+                // Highlight search term
+                if (searchTerm !== '') {
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    nameElement.innerHTML = nameElement.textContent.replace(regex, '<span class="highlight">$1</span>');
+                }
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        toggleNoResults(visibleCount === 0);
+    }
+    
+    function sortItems(sortBy) {
+        const itemsArray = Array.from(menuItems);
+        
+        itemsArray.sort((a, b) => {
+            switch (sortBy) {
+                case 'name':
+                    return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+                case 'price-asc':
+                    return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+                case 'price-desc':
+                    return parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price'));
+                case 'category':
+                    return a.getAttribute('data-category').localeCompare(b.getAttribute('data-category'));
+                default:
+                    return 0;
+            }
+        });
+        
+        // Re-append sorted items
+        itemsArray.forEach(item => {
+            menuContainer.appendChild(item);
+        });
+    }
+    
+    function toggleView(view) {
+        if (view === 'list') {
+            menuContainer.classList.add('list-view');
+            menuItems.forEach(item => {
+                item.classList.remove('col-lg-4', 'col-md-6');
+                item.classList.add('col-12');
+            });
+        } else {
+            menuContainer.classList.remove('list-view');
+            menuItems.forEach(item => {
+                item.classList.remove('col-12');
+                item.classList.add('col-lg-4', 'col-md-6');
+            });
+        }
+    }
+    
+    function toggleNoResults(show) {
+        if (show) {
+            noResults.classList.remove('d-none');
+            menuContainer.style.display = 'none';
+        } else {
+            noResults.classList.add('d-none');
+            menuContainer.style.display = 'flex';
+        }
+    }
+    
+    function addToCart(item) {
+        const existingItem = cart.find(cartItem => cartItem.id === item.id);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ ...item, quantity: 1 });
+        }
+        
+        localStorage.setItem('restaurantCart', JSON.stringify(cart));
+        updateCartDisplay();
+    }
+    
+    function updateCartDisplay() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        document.getElementById('cartCount').textContent = totalItems;
+        document.getElementById('cartTotal').textContent = totalPrice.toLocaleString();
+        
+        if (totalItems > 0) {
+            cartSummary.classList.remove('d-none');
+        } else {
+            cartSummary.classList.add('d-none');
+        }
+    }
+    
+    function animateOnScroll() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    }
+});
+
+function viewCart() {
+    // Redirect to cart page or show cart modal
+    alert('Chức năng giỏ hàng sẽ được phát triển trong phiên bản tiếp theo!');
+}
+</script>

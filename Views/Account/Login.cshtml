@@ -22,7 +22,7 @@
                         </div>
                     }
 
-                    <form method="post" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
+                    <form method="post" asp-action="Login" asp-route-returnUrl="@(Model?.ReturnUrl ?? "")">
                         <div class="mb-4">
                             <label asp-for="Username" class="form-label fw-bold">
                                 <i class="fas fa-user me-2"></i>Tên đăng nhập

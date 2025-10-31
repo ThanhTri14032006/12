@@ -84,8 +84,10 @@
                                         <div class="col-md-8">
                                             <div class="d-flex align-items-center mb-2">
                                                 <h5 class="mb-0 me-3">Mã: #@booking.Id.ToString().PadLeft(6, '0')</h5>
-                                                <span class="badge @(booking.Status == RestaurantMVC.Models.BookingStatus.Confirmed ? "bg-success" : booking.Status == RestaurantMVC.Models.BookingStatus.Pending ? "bg-warning" : "bg-danger") fs-6">
-                                                    @booking.Status
+                                                <span class="badge @(booking.Status == RestaurantMVC.Models.BookingStatus.Confirmed ? "bg-success" : booking.Status == RestaurantMVC.Models.BookingStatus.Pending ? "bg-warning text-dark" : booking.Status == RestaurantMVC.Models.BookingStatus.Completed ? "bg-info" : "bg-danger") fs-6">
+                                                    @(booking.Status == RestaurantMVC.Models.BookingStatus.Pending ? "Chờ xác nhận" : 
+                                                      booking.Status == RestaurantMVC.Models.BookingStatus.Confirmed ? "Đã xác nhận" : 
+                                                      booking.Status == RestaurantMVC.Models.BookingStatus.Completed ? "Hoàn thành" : "Đã hủy")
                                                 </span>
                                             </div>
                                             <div class="row">

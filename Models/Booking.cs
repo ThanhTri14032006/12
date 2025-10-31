@@ -28,7 +28,7 @@ namespace RestaurantMVC.Models
         [Required(ErrorMessage = "Giờ đặt bàn là bắt buộc")]
         [Display(Name = "Giờ đặt bàn")]
         [DataType(DataType.Time)]
-        public TimeSpan BookingTime { get; set; }
+        public DateTime BookingTime { get; set; }
         
         [Required(ErrorMessage = "Số lượng khách là bắt buộc")]
         [Display(Name = "Số lượng khách")]
