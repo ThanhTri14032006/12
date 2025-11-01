@@ -510,7 +510,7 @@
     display: block;
 }
 
-@keyframes fadeIn {
+@@keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
@@ -560,13 +560,13 @@
     animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
+@@keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@@media (max-width: 768px) {
     .booking-steps {
         flex-direction: column;
         gap: 1rem;
@@ -750,31 +750,10 @@ function validateCurrentStep() {
      let isValid = true;
      
      inputs.forEach(input => {
-         if (!input.value.trim()) {
-             input.classList.add('is-invalid');
+         if (!validateField(input)) {
              isValid = false;
-         } else {
-             input.classList.remove('is-invalid');
-             input.classList.add('is-valid');
          }
      });
-     
-     // Additional validation for step 1
-     if (currentStep === 1) {
-         const phone = document.getElementById('Phone');
-         const email = document.getElementById('Email');
-         
-         if (phone.value && !phone.value.match(/^[0-9]{10,11}$/)) {
-             phone.classList.add('is-invalid');
-             isValid = false;
-         }
-         
-         var emailPattern = new RegExp('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
-        if (email.value && !emailPattern.test(email.value)) {
-            email.classList.add('is-invalid');
-            isValid = false;
-        }
-     }
      
      // Additional validation for step 2
      if (currentStep === 2) {
@@ -856,8 +835,9 @@ function validateField(field) {
     
     // Specific validations
     if (field.type === 'email' && value) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) {
+        // Simple email validation
+        var atChar = '@@';
+        if (!value.includes(atChar) || !value.includes('.') || value.indexOf(atChar) === 0 || value.indexOf(atChar) === value.length - 1) {
             field.classList.add('is-invalid');
             field.classList.remove('is-valid');
             return false;
@@ -937,8 +917,11 @@ function handleFormSubmit(e) {
     
     // Simulate form submission delay
     setTimeout(() => {
-        // In real app, this would submit to server
-        e.target.submit();
+        // Get the form element properly
+        const form = document.getElementById('bookingForm');
+        if (form) {
+            form.submit();
+        }
     }, 1000);
 }
 

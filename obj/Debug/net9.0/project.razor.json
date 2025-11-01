@@ -19541,6 +19541,16 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Order/Index.cshtml",
+      "TargetPath": "Views\\Order\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Order/Checkout.cshtml",
+      "TargetPath": "Views\\Order\\Checkout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Booking/Index.cshtml",
       "TargetPath": "Views\\Booking\\Index.cshtml",
       "FileKind": "mvc"
@@ -19558,6 +19568,11 @@
     {
       "FilePath": "/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Home/Index.cshtml",
       "TargetPath": "Views\\Home\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/Users/thanhtri/Downloads/Restaurantly/RestaurantMVC/Views/Order/Confirmation.cshtml",
+      "TargetPath": "Views\\Order\\Confirmation.cshtml",
       "FileKind": "mvc"
     },
     {

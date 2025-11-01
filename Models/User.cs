@@ -23,8 +23,12 @@ namespace RestaurantMVC.Models
         [Display(Name = "Họ tên")]
         public string FullName { get; set; } = string.Empty;
         
+        [Display(Name = "Số điện thoại")]
+        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        public string? Phone { get; set; }
+        
         [Display(Name = "Vai trò")]
-        public UserRole Role { get; set; } = UserRole.Staff;
+        public UserRole Role { get; set; } = UserRole.Customer;
         
         [Display(Name = "Trạng thái")]
         public bool IsActive { get; set; } = true;
@@ -32,12 +36,17 @@ namespace RestaurantMVC.Models
         [Display(Name = "Ngày tạo")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         
+        [Display(Name = "Cập nhật lần cuối")]
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        
         [Display(Name = "Lần đăng nhập cuối")]
         public DateTime? LastLoginAt { get; set; }
     }
     
     public enum UserRole
     {
+        [Display(Name = "Khách hàng")]
+        Customer,
         [Display(Name = "Nhân viên")]
         Staff,
         [Display(Name = "Quản lý")]
